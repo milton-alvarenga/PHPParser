@@ -1,4 +1,6 @@
 <?php
+https://www.php.net/manual/en/migration70.deprecated.php#migration70.deprecated
+
 require '../../lib/PHPParser.class.php';
 
 $PHPParser = new PHPParser();
