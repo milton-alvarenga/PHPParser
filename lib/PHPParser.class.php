@@ -1,13 +1,13 @@
 <?php
 class PHPParser {
     function get_files($fullpath_system,$files_to_return='*.{php,inc}'){
-        $fullpath_system = trim($str, '/')."/";
+        $fullpath_system = $fullpath_system."/";
         
-        return recursive_glob($fullpath_system.$files_to_return,GLOB_BRACE);
+        return $this->recursive_glob($fullpath_system.$files_to_return,GLOB_BRACE);
     }
 
     function get_tokens($fullpath_file){
-        return token_get_all(file_get_contents($file));
+        return token_get_all(file_get_contents($fullpath_file));
     }
 
 
@@ -42,7 +42,7 @@ class PHPParser {
     function recursive_glob($pattern, $flags = 0) {
         $files = glob($pattern, $flags); 
         foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, recursive_glob($dir.'/'.basename($pattern), $flags));
+            $files = array_merge($files, $this->recursive_glob($dir.'/'.basename($pattern), $flags));
         }
         return $files;
     }
