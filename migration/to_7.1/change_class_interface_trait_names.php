@@ -50,7 +50,7 @@ while($file = array_shift($files)){
 		if($current_class){
             if($_token[0] == "T_STRING"){
                 if(strtolower($current_class) == 'void' || strtolower($current_class) === 'iterable'){
-                    $to_change[] = $file.":".$token[2].":".$token[1].":change_invalid_class_name";
+                    $to_change[] = $file.":".$_token[2].":".$_token[1].":change_invalid_class_name";
                 }
             }
         }
