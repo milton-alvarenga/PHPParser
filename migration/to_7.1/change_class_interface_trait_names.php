@@ -11,46 +11,46 @@ $files = $PHPParser->get_files($_SERVER['DOCUMENT_ROOT'] . "/SmartDoc4/testFolde
 
 $to_change = [];
 while($file = array_shift($files)){
-	$tokens = $PHPParser->get_tokens($file);
-	
-	reset($tokens);
-	
+    $tokens = $PHPParser->get_tokens($file);
+    
+    reset($tokens);
+    
 
-	$brackets = 0;
-	$current_class = "";
-	$current_extends_class = "";
-	while($token = $PHPParser->_next($tokens)){
-		
-		if($token[0] == "T_CLASS"){
-			$token = $PHPParser->_next($tokens);
-			if($token[0] == "T_WHITESPACE"){
-				$token = $PHPParser->_next($tokens);
-				if($token[0] == "T_STRING"){
-					$current_class = $token[1];
-					$brackets = 0;
-					$_token = $token;
+    $brackets = 0;
+    $current_class = "";
+    $current_extends_class = "";
+    while($token = $PHPParser->_next($tokens)){
+        
+        if($token[0] == "T_CLASS"){
+            $token = $PHPParser->_next($tokens);
+            if($token[0] == "T_WHITESPACE"){
+                $token = $PHPParser->_next($tokens);
+                if($token[0] == "T_STRING"){
+                    $current_class = $token[1];
+                    $brackets = 0;
+                    $_token = $token;
 
-					$token = $PHPParser->_next($tokens);
-					if($token[0] == "T_WHITESPACE"){
-						$token = $PHPParser->_next($tokens);
-						if($token[0] == "T_EXTENDS"){
-							$token = $PHPParser->_next($tokens);
-							if($token[0] == "T_WHITESPACE"){
-								$token = $PHPParser->_next($tokens);
-								if($token[0] == "T_STRING"){
-									$current_extends_class = $token[1];
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+                    $token = $PHPParser->_next($tokens);
+                    if($token[0] == "T_WHITESPACE"){
+                        $token = $PHPParser->_next($tokens);
+                        if($token[0] == "T_EXTENDS"){
+                            $token = $PHPParser->_next($tokens);
+                            if($token[0] == "T_WHITESPACE"){
+                                $token = $PHPParser->_next($tokens);
+                                if($token[0] == "T_STRING"){
+                                    $current_extends_class = $token[1];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		if($current_class){
- 			if($_token[0] == "T_STRING"){
-				if(strtolower($current_class) == 'void' || strtolower($current_class) === 'iterable'){
-					$to_change[] = $file.":".$_token[2].":".$_token[1].":change_invalid_class_name";
+        if($current_class){
+             if($_token[0] == "T_STRING"){
+                if(strtolower($current_class) == 'void' || strtolower($current_class) === 'iterable'){
+                    $to_change[] = $file.":".$_token[2].":".$_token[1].":change_invalid_class_name";
                 }
             }
         }
