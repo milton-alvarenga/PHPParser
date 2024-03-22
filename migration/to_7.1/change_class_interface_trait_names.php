@@ -1,6 +1,6 @@
 <?php
 
-https://www.php.net/manual/en/migration71.incompatible.php#migration71.incompatible.invalid-class-names
+#https://www.php.net/manual/en/migration71.incompatible.php#migration71.incompatible.invalid-class-names
 
 require '../../lib/PHPParser.class.php';
 
@@ -28,9 +28,9 @@ while($file = array_shift($files)){
 				if($token[0] == "T_STRING"){
 					$current_class = $token[1];
 					$brackets = 0;
-                    $_token = $token;
+					$_token = $token;
 
-                    $token = $PHPParser->_next($tokens);
+					$token = $PHPParser->_next($tokens);
 					if($token[0] == "T_WHITESPACE"){
 						$token = $PHPParser->_next($tokens);
 						if($token[0] == "T_EXTENDS"){
@@ -48,9 +48,9 @@ while($file = array_shift($files)){
 		}
 
 		if($current_class){
-            if($_token[0] == "T_STRING"){
-                if(strtolower($current_class) == 'void' || strtolower($current_class) === 'iterable'){
-                    $to_change[] = $file.":".$_token[2].":".$_token[1].":change_invalid_class_name";
+ 			if($_token[0] == "T_STRING"){
+				if(strtolower($current_class) == 'void' || strtolower($current_class) === 'iterable'){
+					$to_change[] = $file.":".$_token[2].":".$_token[1].":change_invalid_class_name";
                 }
             }
         }
