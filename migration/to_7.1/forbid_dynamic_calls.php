@@ -1,6 +1,6 @@
 <?php
 
-https://www.php.net/manual/pt_BR/migration71.incompatible.php#migration71.incompatible.forbid-dynamic-calls-to-scope-introspection-functions
+#https://www.php.net/manual/pt_BR/migration71.incompatible.php#migration71.incompatible.forbid-dynamic-calls-to-scope-introspection-functions
 
 require '../../lib/PHPParser.class.php';
 
