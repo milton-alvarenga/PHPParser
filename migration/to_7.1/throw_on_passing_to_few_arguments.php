@@ -1,6 +1,6 @@
 <?php
 
-https://www.php.net/manual/en/migration71.incompatible.php#migration71.incompatible.too-few-arguments-exception
+#https://www.php.net/manual/en/migration71.incompatible.php#migration71.incompatible.too-few-arguments-exception
 
 require '../../lib/PHPParser.class.php';
 
