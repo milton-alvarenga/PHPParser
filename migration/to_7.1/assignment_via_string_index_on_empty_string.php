@@ -72,6 +72,7 @@ while($file = array_shift($files)) {
 }
 
 //Actions must to be ordered by affected file line
+sort($to_change);
 // print_r($to_change);
 
 while($change = array_shift($to_change)){
