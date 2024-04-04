@@ -96,7 +96,7 @@ while($change = array_shift($to_change)){
 						if ($pos !== false) {
 						    $line = substr_replace($line,$newVar,$pos,strlen($term));
 						}
-                        print_r($line);
+                                                print_r($line);
 						if($tmp_line == $line){
 							print "Not changed. <br>";
 						} else {
