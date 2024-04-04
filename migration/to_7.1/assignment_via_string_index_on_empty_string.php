@@ -8,7 +8,7 @@ require "../../lib/PHPParser.class.php";
 $PHPParser = new PHPParser();
 
 $files = $PHPParser->get_files($_SERVER['DOCUMENT_ROOT'] . "/SmartDoc4/testFolder");
-$indexAssignmentOnEmptyVariables = [];
+$to_change = [];
 
 while($file = array_shift($files)) {
 
@@ -62,15 +62,62 @@ while($file = array_shift($files)) {
                         $emptyStringVerification = $emptyVariables[$_token[1]];
 
                         if($emptyStringVerification) {
-                            $indexAssignmentOnEmptyVariables[] = "empty_variable_with_index_assigment_on:".$file.":".$_token[2].":".$varRepresentation;
+                            $to_change[] = $file.":".$_token[2].":".$varRepresentation.":".$_token[1].":empty_variable_with_index_assignment";
                         }
                     }
                 }
             }
         }
     }
+}
 
-    print_r($indexAssignmentOnEmptyVariables);
+//Actions must to be ordered by affected file line
+// print_r($to_change);
+
+while($change = array_shift($to_change)){
+	// print "Starting ".$change."<br>";
+	list($file,$file_line,$var_name,$newVar,$action) = explode(":",$change);
+	$handle = fopen($file, "r");
+	$writing = fopen($file.'.tmp', 'w');
+
+	if ($handle) {
+		$read_line = 1;
+	    while (($line = fgets($handle)) !== false) {
+	    	if($file_line == $read_line){
+	    		$tmp_line = $line;
+                
+	    		print "Must to change this line on action ".$action."<br>";
+
+	    		switch($action){
+	    			case "empty_variable_with_index_assignment":
+			    		$term = $var_name;
+			    		$pos = strpos($line,$term);
+
+						if ($pos !== false) {
+						    $line = substr_replace($line,$newVar,$pos,strlen($term));
+						}
+                        print_r($line);
+						if($tmp_line == $line){
+							print "Not changed. <br>";
+						} else {
+							print "Changed <br>";
+						}
+					break;
+                }
+            }
+	        // process the line read.
+	        fputs($writing, $line);
+	        $read_line++;
+	    }
+	
+	    fclose($handle);
+	    fclose($writing);
+	    
+	    rename($file.'.tmp', $file);
+	} else {
+	    // error opening the file.
+	    throw new Exception("Could not open file ".$file."\n");
+    }
 }
 
 ?>
