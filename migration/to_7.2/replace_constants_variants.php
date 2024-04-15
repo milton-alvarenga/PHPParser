@@ -8,7 +8,6 @@ $PHPParser = new PHPParser();
 
 $files = $PHPParser->get_files($_SERVER['DOCUMENT_ROOT']."/SmartDoc4/testFolder");
 $to_change = [];
-$willChange = [];
 
 while($file = array_shift($files)) {
 
@@ -17,31 +16,12 @@ while($file = array_shift($files)) {
     reset($tokens);
 
     while($token = $PHPParser->_next($tokens)) {
-        if($token[0] == "T_STRING") {
-            if($token[1] == "idn_to_utf8" || $token[1] == "idn_to_ascii") {
-                $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
-                if($token[0] == "DRALL_STRUCT" && $token[1] == "(") {
-
-                    while($token = $PHPParser->_next($tokens)) {
-                        if($token[0] == "T_STRING" && $token[1] == "INTL_IDNA_VARIANT_2003") {
-                            $willChange[] = $file.":".$token[2].":INTL_IDNA_VARIANT_2003_will_be_replaced_by_ INTL_IDNA_VARIANT_UTS46";
-                            $to_change[] = $file.":".$token[2].":".$token[1].":replace_deprecated_constant";
-                        }
-                        if($token[0] == ")") {
-                            break;
-                        }
-                    }
-
-                }
-            }
+        if($token[0] == "T_STRING" && $token[1] == "INTL_IDNA_VARIANT_2003") {
+            $to_change[] = $file.":".$token[2].":".$token[1].":replace_deprecated_constant";
         }
     }
 
 }
-
-print_r($to_change);
-echo "<br>";
-print_r($willChange);
 
 //Actions must to be ordered by affected file line
 sort($to_change);
