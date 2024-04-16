@@ -55,7 +55,7 @@ while($change = array_shift($to_change)){
                 switch($action){
                     case "error_message_var_not_started":
                         //Just concat this line before where the $php_errormsg was called
-                        $line .= "\n \$php_errormsg = error_get_last()['message'] ?? null;\n";
+                        $line .= "\$php_errormsg = error_get_last()['message'] ?? null;\n";
                         
                         break;
                     default:
