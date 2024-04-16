@@ -23,7 +23,7 @@ while($file = array_shift($files)) {
 
                 $token = $PHPParser->_next($tokens);
                 if($token[0] == "T_VARIABLE") {
-                    $token = $PHPParser->_next($tokens);
+                    $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
                     if($token[0] == "DRALL_STRUCT" && $token[1] == ")") {
                         $to_change[] = $file.":".$_token[2].":".$_token[1].":parse_str_with_only_one_argument";
                     }
