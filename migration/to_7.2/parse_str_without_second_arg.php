@@ -21,7 +21,7 @@ while($file = array_shift($files)) {
             $token = $PHPParser->_next($tokens);
             if($token[0] == "DRALL_STRUCT" && $token[1] == "(") {
 
-                $token = $PHPParser->_next($tokens);
+                $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
                 if($token[0] == "T_VARIABLE") {
                     $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
                     if($token[0] == "DRALL_STRUCT" && $token[1] == ")") {
