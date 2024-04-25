@@ -1,6 +1,6 @@
 <?php
 
-#https://www.php.net/manual/en/migration72.deprecated.php#migration72.deprecated.read_exif_data-function
+#https://www.php.net/manual/en/migration72.deprecated.php#migration72.deprecated.errcontext-arg-of-error-handlers
 
 include "../../lib/PHPParser.class.php";
 
