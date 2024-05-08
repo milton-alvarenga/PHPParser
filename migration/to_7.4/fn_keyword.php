@@ -26,6 +26,30 @@ while($file = array_shift($files)) {
     reset($tokens);
 
     while ($token = $PHPParser->_next($tokens)) {
+        if($token[0] == "T_NAMESPACE") {
+            $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
+
+            if ($token[0] == "T_STRING") {
+                $stringToCheck = preg_replace('/\s+/', '', strtolower($token[1]));
+
+                if ($stringToCheck == 'match') {
+                    $to_change[] = $file . ":" . $token[2] . ":" . $token[1] . ":change_namespace_name";
+                }
+            }
+        }
+
+        if($token[0] == "T_TRAIT") {
+            $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
+
+            if ($token[0] == "T_STRING") {
+                $stringToCheck = preg_replace('/\s+/', '', strtolower($token[1]));
+
+                if ($stringToCheck == 'match') {
+                    $to_change[] = $file . ":" . $token[2] . ":" . $token[1] . ":change_trait_name";
+                }
+            }
+        }
+
         if ($token[0] == "T_CLASS") {
             $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
 
@@ -96,11 +120,12 @@ while($change = array_shift($to_change)){
                 print "Must to change this line on action ".$action."\n";
 
                 switch($action){
+                    case "change_namespace_name":
+                    case "change_trait_name":
                     case "change_class_name":
                     case "change_function_name":
                     case "change_instance_class_name":
                     case "change_instance_name":
-                        //Replace first occurrence of class name to __constructor
                         $term = $fnKeyWord;
                         $pos = strpos($line,$term);
                         if ($pos !== false) {
