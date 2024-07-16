@@ -12,22 +12,19 @@ $files = $PHPParser->get_files($_SERVER['DOCUMENT_ROOT'] . "/SmartDoc4/testFolde
 $to_change = [];
 while($file = array_shift($files)){
     $tokens = $PHPParser->get_tokens($file);
-    
-    reset($tokens);
-    
 
-    $brackets = 0;
+    reset($tokens);
+
     $current_class = "";
     $current_extends_class = "";
     while($token = $PHPParser->_next($tokens)){
-        
+
         if($token[0] == "T_CLASS"){
             $token = $PHPParser->_next($tokens);
             if($token[0] == "T_WHITESPACE"){
                 $token = $PHPParser->_next($tokens);
                 if($token[0] == "T_STRING"){
                     $current_class = $token[1];
-                    $brackets = 0;
                     $_token = $token;
 
                     $token = $PHPParser->_next($tokens);
