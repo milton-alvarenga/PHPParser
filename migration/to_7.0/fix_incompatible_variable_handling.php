@@ -12,7 +12,7 @@ $to_change = [];
 
 while($file = array_shift($files)){
 	print $file."\n";
-	$tokens = $PHPParser->get_tokens($file));
+	$tokens = $PHPParser->get_tokens($file);
 	
 	reset($tokens);
 	$inside_php_code = false;
