@@ -4,8 +4,10 @@ services:
     build:
       context: .
       dockerfile: ./migration/to_7.1/Dockerfile
+      #dockerfile: ./migration/to_7.4/Dockerfile
+      #dockerfile: ./migration/to_8.0/Dockerfile
     ports:
       - "8080:80"
     volumes:
-      - /Users/dprin/Documents/Work/PHPParser:/var/www/html/
-      - /Users/dprin/Documents/Work/SmartDoc4:/var/www/html/SmartDoc4
+      - .:/var/www/html/
+      - ../SmartDoc4:/var/www/html/SmartDoc4
