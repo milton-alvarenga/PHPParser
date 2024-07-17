@@ -6,20 +6,49 @@ include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 
-$files = $PHPParser->get_files($_SERVER['DOCUMENT_ROOT']."/SmartDoc4/");
+$files = $PHPParser->get_files(__DIR__."/../../SmartDoc4/");
+
+print "Loaded ".count($files)." files\n";
+
 $to_change = [];
 while($file = array_shift($files)) {
-
+    print "Analyzing ".$file."\n";
     $tokens = $PHPParser->get_tokens($file);
 
     reset($tokens);
 
     while($token = $PHPParser->_next($tokens)) {
+        $spaces = "";
         if($token[0] == "T_VARIABLE") {
             $_token = $token;
-            $token = $PHPParser->_next($tokens, ['T_WHITESPACE']);
+
+            while($token = $PHPParser->_next($tokens)){
+                if( $token[0] != 'T_WHITESPACE' ){
+                    break;
+                }
+                $spaces .= $token[1];
+            }
+
             if($token[0] == 'DRALL_STRUCT' && $token[1] == "{") {
-                $to_change[] = $file.":".$_token[2].":".$token[1].":change_braces_for_brackets";
+                $variable_name_replace = $_token[1].$spaces."[";
+                $change = $file.":".$_token[2].":".$_token[1].$spaces.$token[1];
+                while($token = $PHPParser->_next($tokens)){
+                    if( $token[0] != 'T_WHITESPACE' ){
+                        break;
+                    }
+                    $change .= $token[1];
+                    $variable_name_replace .= $token[1];
+                }
+
+                do {
+                    if($token[0] == 'DRALL_STRUCT' && $token[1] == "}") {
+                        break;
+                    }
+                    $change .= $token[1];
+                    $variable_name_replace .= $token[1];
+                } while($token = $PHPParser->_next($tokens));
+                $variable_name_replace .= "]";
+                $to_change[] = $change.$token[1].":".$variable_name_replace.":change_braces_for_brackets";
             }
         }
     }
@@ -29,9 +58,10 @@ while($file = array_shift($files)) {
 //Actions must to be ordered by affected file line
 sort($to_change);
 
+
 while($change = array_shift($to_change)){
     print "Starting ".$change."\n";
-    list($file,$file_line,$function_name,$action) = explode(":",$change);
+    list($file,$file_line,$variable_name,$variable_name_replace,$action) = explode(":",$change);
 
     $handle = fopen($file, "r");
     $writing = fopen($file.'.tmp', 'w');
@@ -44,8 +74,7 @@ while($change = array_shift($to_change)){
 
                 switch($action){
                     case "change_braces_for_brackets":
-                        $newLine = str_replace("{", "[", $tmp_line);
-                        $newLine = str_replace("}", "]", $newLine);
+                        $newLine = str_replace($variable_name, $variable_name_replace, $tmp_line);
 
                         $line = $newLine;
 
