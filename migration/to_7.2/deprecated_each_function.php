@@ -89,6 +89,8 @@ while($change = array_shift($to_change)){
         fclose($handle);
         fclose($writing);
         rename($file.'.tmp', $file);
+        chown($file,1000);
+        chgrp($file,1000);
     } else {
         // Erro ao abrir o arquivo.
         throw new Exception("Could not open file ".$file."\n");

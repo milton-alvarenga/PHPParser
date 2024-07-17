@@ -6,7 +6,7 @@ include '../../lib/PHPParser.class.php';
 
 $PHPParser = new PHPParser();
 
-$files = $PHPParser->get_files($_SERVER['DOCUMENT_ROOT'].'/SmartDoc4/testFolder');
+$files = $PHPParser->get_files(__DIR__."/../../SmartDoc4/");
 $globalConstantsList = [];
 $to_change = [];
 
@@ -83,6 +83,8 @@ while($change = array_shift($to_change)){
         fclose($writing);
 
         rename($file.'.tmp', $file);
+        chown($file,1000);
+        chgrp($file,1000);
     } else {
         // error opening the file.
         throw new Exception("Could not open file ".$file."\n");

@@ -1,11 +1,11 @@
 <?php
-https://www.php.net/manual/en/migration70.deprecated.php#migration70.deprecated
+#https://www.php.net/manual/en/migration70.deprecated.php#migration70.deprecated
 
-require '../../lib/PHPParser.class.php';
+include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 
-$files = $PHPParser->get_files("/tmp/system_name/");
+$files = $PHPParser->get_files(__DIR__."/../../SmartDoc4/");
 
 
 $to_change = [];
@@ -24,14 +24,14 @@ while($file = array_shift($files)){
 		if($token[0] == "T_CLASS"){
 			$token = $PHPParser->_next($tokens);
 			if($token[0] == "T_WHITESPACE"){
-				$token = $PHPParser->_next($tokens);
+				$token = $PHPParser->_next($tokens,["T_WHITESPACE"]);
 				if($token[0] == "T_STRING"){
 					$current_class = $token[1];
 					$brackets = 0;
 					
 					$token = $PHPParser->_next($tokens);
 					if($token[0] == "T_WHITESPACE"){
-						$token = $PHPParser->_next($tokens);
+						$token = $PHPParser->_next($tokens,["T_WHITESPACE"]);
 						
 						if($token[0] == "T_EXTENDS"){
 							$token = $PHPParser->_next($tokens);
@@ -51,7 +51,7 @@ while($file = array_shift($files)){
 			if($token[0] == "T_FUNCTION"){
 				$token = $PHPParser->_next($tokens);
 				if($token[0] == "T_WHITESPACE"){
-					while($token = $PHPParser->_next($tokens)){
+					while($token = $PHPParser->_next($tokens,["T_WHITESPACE"])){
 						if($token[0] != "T_STRING"){
 							if($token == "{"){
 								break;
@@ -72,7 +72,7 @@ while($file = array_shift($files)){
 			if($token[0] == "T_VARIABLE"){
 				$token = $PHPParser->_next($tokens);
 				if($token[0] == "T_OBJECT_OPERATOR"){
-					$token = $PHPParser->_next($tokens);
+					$token = $PHPParser->_next($tokens,["T_WHITESPACE"]);
 					if(
 						$token[0] == "T_STRING"
 					){
@@ -205,7 +205,9 @@ while($change = array_shift($to_change)){
 	    fclose($handle);
 	    fclose($writing);
 	    
-	    rename($file.'.tmp', $file);
+		rename($file.'.tmp', $file);
+		chown($file,1000);
+		chgrp($file,1000);
 	} else {
 	    // error opening the file.
 	    throw new Exception("Could not open file ".$file."\n");
