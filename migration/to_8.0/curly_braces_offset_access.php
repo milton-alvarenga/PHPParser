@@ -29,6 +29,22 @@ while($file = array_shift($files)) {
                 $spaces .= $token[1];
             }
 
+            if($token[0] == 'T_OBJECT_OPERATOR'){
+                $spaces .= $token[1];
+
+                while($token = $PHPParser->_next($tokens)){
+                    if( $token[0] != 'T_WHITESPACE' ){
+                        break;
+                    }
+                    $spaces .= $token[1];
+                }
+
+                if($token[0] == 'T_STRING'){
+                    $spaces .= $token[1];
+                }
+                $token = $PHPParser->_next($tokens);
+            }
+
             if($token[0] == 'DRALL_STRUCT' && $token[1] == "{") {
                 $variable_name_replace = $_token[1].$spaces."[";
                 $change = $file.":".$_token[2].":".$_token[1].$spaces.$token[1];
