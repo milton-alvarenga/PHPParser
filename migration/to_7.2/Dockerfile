@@ -3,7 +3,7 @@
 
     WORKDIR /var/www/html
 
-    COPY . .
+    #COPY . .
     
     EXPOSE 80
     
