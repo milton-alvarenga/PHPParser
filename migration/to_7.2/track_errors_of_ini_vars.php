@@ -2,7 +2,7 @@
 
 #https://www.php.net/manual/en/migration72.deprecated.php#migration72.deprecated.track_errors-and-php_errormsg
 
-include "../../lib/PHPParser.class.php";
+include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 

@@ -1,5 +1,5 @@
 <?php
-include "../../lib/PHPParser.class.php";
+include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 

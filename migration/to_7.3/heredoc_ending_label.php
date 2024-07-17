@@ -2,7 +2,7 @@
 //phpinfo();
 #https://www.php.net/manual/en/migration73.incompatible.php#migration73.incompatible.core.heredoc-nowdoc
 
-include "../../lib/PHPParser.class.php";
+include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 

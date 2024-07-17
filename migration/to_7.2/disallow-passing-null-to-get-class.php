@@ -2,7 +2,7 @@
 
 #https://www.php.net/manual/en/migration72.incompatible.php#migration72.incompatible.no-null-to-get_class
 
-include "../../lib/PHPParser.class.php";
+include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 

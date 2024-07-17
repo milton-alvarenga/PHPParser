@@ -2,7 +2,7 @@
 
 #https://www.php.net/manual/en/migration72.deprecated.php#migration72.deprecated.png2wbmp-jpeg2wbmp
 
-include "../../lib/PHPParser.class.php";
+include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 

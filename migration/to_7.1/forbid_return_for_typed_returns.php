@@ -2,7 +2,7 @@
 
 #https://www.php.net/manual/en/migration71.incompatible.php#migration71.incompatible.typed-returns-compile-time
 
-include "../../lib/PHPParser.class.php";
+include __DIR__."/../../lib/PHPParser.class.php";
 
 $PHPParser = new PHPParser();
 
