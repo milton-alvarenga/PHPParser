@@ -6,6 +6,7 @@ include __DIR__."/../../lib/PHPParser.class.php";
 $PHPParser = new PHPParser();
 
 $files = $PHPParser->get_files(__DIR__."/../../SmartDoc4/");
+print "Loaded ".count($files)." files\n";
 
 
 $to_change = [];
