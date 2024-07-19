@@ -1,5 +1,5 @@
 <?php
-#https://www.php.net/manual/en/migration70.deprecated.php#migration70.deprecated
+#https://www.php.net/manual/en/migration70.deprecated.php#migration70.deprecated.php4-constructors
 
 include __DIR__."/../../lib/PHPParser.class.php";
 
